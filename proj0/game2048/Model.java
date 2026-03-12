@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author EMT
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -138,6 +138,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for (int col=0 ;col<b.size() ;col+=1) {
+            for(int row=0; row< b.size(); row+=1){
+                if (b.tile(col,row)==null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +155,16 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for (int col=0 ;col<b.size() ;col+=1) {
+            for(int row=0; row< b.size(); row+=1){
+                if (b.tile(col,row)==null) {
+
+                } else if (b.tile(col,row).value()==MAX_PIECE) {
+                    return true;
+
+                }
+            }
+        }
         return false;
     }
 
@@ -159,9 +176,23 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
-        return false;
+        Side [] arr={Side.NORTH,Side.SOUTH,Side.EAST,Side.WEST};
+        if (emptySpaceExists(b)) {
+            return true;
+        } else {
+            for (int col = 0; col < b.size(); col += 1) {
+                for (int row = 0; row < b.size(); row += 1) {
+                    for (Side x : arr){
+                        b.setViewingPerspective(x);
+                    if (b.move(col, row, b.tile(col, row))) {
+                        return true;
+                       }
+                    }
+                }
+            }
+            return false;
+        }
     }
-
 
     @Override
      /** Returns the model as a string, used for debugging. */
