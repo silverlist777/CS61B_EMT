@@ -113,6 +113,28 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        board.setViewingPerspective(side);
+        int col;
+        int row;
+        int tgt_row=board.size()-1;
+        for (col=0; col<board.size();col+=1) {
+            for (row=0;row<board.size()-1;row+=1){
+                Tile tile1=tile(col,board.size()-row-2);
+                Tile tgt_tile=tile(col,tgt_row);
+                if (tile1!=null){
+                    if (tgt_tile==null || tgt_tile.value()==tile1.value()){
+                        if (board.move(col,tgt_row,tile1)==true){
+                            tgt_row-=1;
+                            score+=tile1.value()*2;
+                            changed=true;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
@@ -176,23 +198,33 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
-        Side [] arr={Side.NORTH,Side.SOUTH,Side.EAST,Side.WEST};
+
         if (emptySpaceExists(b)) {
             return true;
         } else {
             for (int col = 0; col < b.size(); col += 1) {
                 for (int row = 0; row < b.size(); row += 1) {
-                    for (Side x : arr){
-                        b.setViewingPerspective(x);
-                    if (b.move(col, row, b.tile(col, row))) {
-                        return true;
-                       }
-                    }
+                    if (row< b.size()-1 && col <b.size()-1) {
+                        if (b.tile(col, row).value() == b.tile(col + 1, row).value() || b.tile(col, row).value() == b.tile(col, row + 1).value()) {
+                            return true;
+                        }
+                    }else if (col== b.size()-1 && row<b.size()-1){
+                        if (b.tile(col,row).value()==b.tile(col,row+1).value()){
+                            return true;
+                        }
+                    }else if (col< b.size()-1 && row==b.size()-1){
+                        if (b.tile(col,row).value()==b.tile(col+1,row).value()){
+                            return true;
+                        }
+                        }
+
+
                 }
             }
+        }
             return false;
         }
-    }
+
 
     @Override
      /** Returns the model as a string, used for debugging. */
