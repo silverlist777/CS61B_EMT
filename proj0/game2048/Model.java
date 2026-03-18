@@ -114,26 +114,34 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
         board.setViewingPerspective(side);
-        int col;
-        int row;
-        int tgt_row=board.size()-1;
-        for (col=0; col<board.size();col+=1) {
-            for (row=0;row<board.size()-1;row+=1){
-                Tile tile1=tile(col,board.size()-row-2);
-                Tile tgt_tile=tile(col,tgt_row);
-                if (tile1!=null){
-                    if (tgt_tile==null || tgt_tile.value()==tile1.value()){
-                        if (board.move(col,tgt_row,tile1)==true){
-                            tgt_row-=1;
-                            score+=tile1.value()*2;
-                            changed=true;
-                            }
-                        }
+        for (int col=0;col<board.size();col+=1) {
+
+
+            int tgt_row = board.size() - 1;
+            for (int rowTile = board.size() - 2; rowTile > -1; rowTile -= 1){
+                if (board.tile(col,rowTile)!=null){
+                    if(board.tile(col,tgt_row)==null){
+                    board.move(col, tgt_row,board.tile(col,rowTile));
+
+
+                    changed=true;
+                    }else if (board.tile(col,tgt_row).value()==board.tile(col,rowTile).value()) {
+                        score += board.tile(col, tgt_row).value()*2;
+                        board.move(col,tgt_row,board.tile(col,rowTile));
+                    tgt_row -= 1;
+
+                    changed = true;
+                }else{
+                       tgt_row-=1;
+                       if (tgt_row!=rowTile){
+                           board.move(col,tgt_row,board.tile(col,rowTile));
+                           changed=true;
+                       }
+
                     }
                 }
-
             }
-
+        }
         board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
@@ -143,6 +151,19 @@ public class Model extends Observable {
         return changed;
     }
 
+    public boolean reduceOrNot(int col,int row,int tgt_row){
+        if (nullOrNot(col,row) && board.tile(col,row).value()==board.tile(col,tgt_row).value()){
+            return true;
+        }
+        return false;
+    }
+public boolean nullOrNot(int col,int row){
+        if (board.tile(col,row)==null){
+            return false;
+
+        }
+        return true;
+}
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
      */
