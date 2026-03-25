@@ -5,8 +5,17 @@ public class Sort{
         // move it to the front
         // select n-1 items (use recursion)
         //use helper method
+        sort(x,0);
     }
-    public static String FindLargestNum(String[] x){
+    public static void sort(String[] x, int start) {
+
+        start = 0;
+        if (start < x.length - 1) {
+            swap(x, start, FindLargestNum(x));
+            start += 1;
+        }
+    }
+    public static int FindLargestNum(String[] x){
         int LargestNumIndex=0;
         for (int i=0;i<x.length;i+=1){
             int result=x[i].compareTo(x[LargestNumIndex]);
@@ -14,7 +23,7 @@ public class Sort{
                 LargestNumIndex=i;
             }
         }
-        return x[LargestNumIndex];
+        return LargestNumIndex;
     }
     // change the places of the two element in the array
     public static void swap(String[] x,int a,int b){

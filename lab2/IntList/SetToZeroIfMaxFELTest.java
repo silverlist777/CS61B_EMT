@@ -26,3 +26,5 @@ public class SetToZeroIfMaxFELTest {
         assertEquals("0 -> 0 -> 35 -> 0 -> 10 -> 0", L.toString());
     }
 }
+
+//检查后面的最大值是否首尾相等，来决定当前这一个节点是否为零。。。

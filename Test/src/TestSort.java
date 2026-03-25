@@ -1,3 +1,5 @@
+import org.junit.Assert;
+import org.junit.Test;
 public class TestSort {
     // a class used for having tests
    public static void testSort() {
@@ -9,7 +11,7 @@ public class TestSort {
     public static void testLargestStr(){
         String[] input = {"beware", "of", "falling", "rocks"};
         String expected = "beware";
-        String actual=Sort.FindLargestNum(input);
+        String actual=input[Sort.FindLargestNum(input)];
         org.junit.Assert.assertEquals(expected,actual);
     }
     public static void testswap(){
