@@ -23,6 +23,30 @@ public class TimeSLList {
 
     public static void timeGetLast() {
         // TODO: YOUR CODE HERE
+        //Create an SLList.
+        //Add N items to the SLList.
+        //Start the timer.
+        //Perform M getLast operations on the SLList.
+        //Check the timer. This gives the total time to complete all M operations.
+        SLList list=new SLList();
+        AList<Integer> Ns=new AList<>();
+        AList<Double> times=new AList<>();
+        AList<Integer> opCounts=new AList<>();
+        int M=10000;
+        for(int N=1000;N<=128000;N*=2) {
+            Ns.addLast(N);
+            opCounts.addLast(M);
+            for (int i = 0; i <= N; i += 1) {
+                list.addLast(i);
+            }
+            Stopwatch sp = new Stopwatch();
+            for (int k = 0; k <= M; k += 1) {
+                list.getLast();
+            }
+            Double timeInSeconds = sp.elapsedTime();
+            times.addLast(timeInSeconds);
+        }
+        printTimingTable(Ns,times,opCounts);
     }
 
 }
